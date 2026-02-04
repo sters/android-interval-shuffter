@@ -34,7 +34,7 @@ help:
 
 # Docker image name
 DOCKER_IMAGE := interval-shuffter-builder
-DOCKER_RUN := docker run --rm -v $(PWD):/app -w /app $(DOCKER_IMAGE)
+DOCKER_RUN := docker run --rm --platform linux/amd64 -v $(PWD):/app -w /app $(DOCKER_IMAGE)
 
 # Firebase settings
 FIREBASE_APP_ID ?= $(shell cat firebase.json 2>/dev/null | grep -o '"appId"[[:space:]]*:[[:space:]]*"[^"]*"' | sed 's/.*"appId"[[:space:]]*:[[:space:]]*"\([^"]*\)"/\1/')
@@ -48,7 +48,7 @@ RELEASE_NOTES ?= $(shell git log -1 --pretty=format:'%s')
 # Build Docker image
 docker-build:
 	@echo "Building Docker image..."
-	docker build -t $(DOCKER_IMAGE) .
+	docker build --platform linux/amd64 -t $(DOCKER_IMAGE) .
 
 # Build debug APK
 build: docker-build
@@ -83,7 +83,7 @@ test: docker-build
 # Open shell in Docker container
 docker-shell: docker-build
 	@echo "Opening shell in Docker container..."
-	docker run --rm -it -v $(PWD):/app -w /app $(DOCKER_IMAGE) /bin/bash
+	docker run --rm -it --platform linux/amd64 -v $(PWD):/app -w /app $(DOCKER_IMAGE) /bin/bash
 
 # Install APK to connected device (requires local adb)
 install: build

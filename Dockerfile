@@ -1,4 +1,4 @@
-FROM openjdk:17-slim
+FROM --platform=linux/amd64 eclipse-temurin:17-jdk-jammy
 
 ENV ANDROID_SDK_ROOT=/opt/android-sdk
 ENV ANDROID_HOME=${ANDROID_SDK_ROOT}

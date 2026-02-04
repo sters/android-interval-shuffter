@@ -1,0 +1,11 @@
+.git
+.gitignore
+.gradle
+build
+app/build
+*.apk
+*.aab
+local.properties
+plan.md
+README.md
+LICENSE

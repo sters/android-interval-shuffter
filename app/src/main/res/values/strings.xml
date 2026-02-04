@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Interval Shuffter</string>
+    <string name="notification_channel_name">撮影中</string>
+    <string name="notification_channel_description">インターバル撮影の通知</string>
+</resources>

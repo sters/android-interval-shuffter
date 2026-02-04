@@ -1,4 +1,4 @@
-package com.example.intervalshuffter.service
+package com.github.sters.intervalshuffter.service
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -19,12 +19,12 @@ import androidx.core.app.NotificationCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
-import com.example.intervalshuffter.CameraType
-import com.example.intervalshuffter.MainActivity
-import com.example.intervalshuffter.R
-import com.example.intervalshuffter.StopConditionType
-import com.example.intervalshuffter.camera.CameraManager
-import com.example.intervalshuffter.storage.ImageSaver
+import com.github.sters.intervalshuffter.CameraType
+import com.github.sters.intervalshuffter.MainActivity
+import com.github.sters.intervalshuffter.R
+import com.github.sters.intervalshuffter.StopConditionType
+import com.github.sters.intervalshuffter.camera.CameraManager
+import com.github.sters.intervalshuffter.storage.ImageSaver
 
 class CaptureService : Service(), LifecycleOwner {
 
@@ -293,10 +293,10 @@ class CaptureService : Service(), LifecycleOwner {
         private const val CHANNEL_ID = "capture_channel"
         private const val NOTIFICATION_ID = 1
 
-        const val ACTION_START = "com.example.intervalshuffter.START"
-        const val ACTION_PAUSE = "com.example.intervalshuffter.PAUSE"
-        const val ACTION_RESUME = "com.example.intervalshuffter.RESUME"
-        const val ACTION_STOP = "com.example.intervalshuffter.STOP"
+        const val ACTION_START = "com.github.sters.intervalshuffter.START"
+        const val ACTION_PAUSE = "com.github.sters.intervalshuffter.PAUSE"
+        const val ACTION_RESUME = "com.github.sters.intervalshuffter.RESUME"
+        const val ACTION_STOP = "com.github.sters.intervalshuffter.STOP"
 
         const val EXTRA_INTERVAL = "interval"
         const val EXTRA_STOP_TYPE = "stop_type"

@@ -1,4 +1,4 @@
-package com.example.intervalshuffter
+package com.github.sters.intervalshuffter
 
 import android.Manifest
 import android.content.ComponentName
@@ -18,11 +18,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.intervalshuffter.service.CaptureService
-import com.example.intervalshuffter.ui.screens.CaptureScreen
-import com.example.intervalshuffter.ui.screens.SettingsScreen
-import com.example.intervalshuffter.ui.theme.IntervalShuffterTheme
-import com.example.intervalshuffter.viewmodel.CaptureViewModel
+import com.github.sters.intervalshuffter.service.CaptureService
+import com.github.sters.intervalshuffter.ui.screens.CaptureScreen
+import com.github.sters.intervalshuffter.ui.screens.SettingsScreen
+import com.github.sters.intervalshuffter.ui.theme.IntervalShuffterTheme
+import com.github.sters.intervalshuffter.viewmodel.CaptureViewModel
 
 class MainActivity : ComponentActivity() {
 

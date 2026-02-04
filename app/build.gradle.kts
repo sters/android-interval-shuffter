@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.intervalshuffter"
+    namespace = "com.github.sters.intervalshuffter"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.intervalshuffter"
+        applicationId = "com.github.sters.intervalshuffter"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

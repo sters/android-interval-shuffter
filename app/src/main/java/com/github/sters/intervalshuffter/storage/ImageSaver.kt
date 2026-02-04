@@ -1,4 +1,4 @@
-package com.example.intervalshuffter.storage
+package com.github.sters.intervalshuffter.storage
 
 import android.content.ContentValues
 import android.content.Context

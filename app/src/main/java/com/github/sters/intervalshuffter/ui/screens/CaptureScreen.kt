@@ -1,4 +1,4 @@
-package com.example.intervalshuffter.ui.screens
+package com.github.sters.intervalshuffter.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,10 +10,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.intervalshuffter.CaptureSettings
-import com.example.intervalshuffter.CaptureState
-import com.example.intervalshuffter.StopConditionType
-import com.example.intervalshuffter.ui.components.CameraPreview
+import com.github.sters.intervalshuffter.CaptureSettings
+import com.github.sters.intervalshuffter.CaptureState
+import com.github.sters.intervalshuffter.StopConditionType
+import com.github.sters.intervalshuffter.ui.components.CameraPreview
 
 @Composable
 fun CaptureScreen(

@@ -1,4 +1,4 @@
-package com.example.intervalshuffter.camera
+package com.github.sters.intervalshuffter.camera
 
 import android.content.Context
 import android.util.Log
@@ -10,7 +10,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
-import com.example.intervalshuffter.CameraType
+import com.github.sters.intervalshuffter.CameraType
 import java.util.concurrent.Executor
 
 class CameraManager(

@@ -1,4 +1,4 @@
-package com.example.intervalshuffter.ui.theme
+package com.github.sters.intervalshuffter.ui.theme
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme

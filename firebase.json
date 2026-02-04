@@ -1,6 +1,6 @@
 {
   "appdistribution": {
-    "appId": "YOUR_FIREBASE_APP_ID",
+    "appId": "1:64454398312:android:7b28ce60a57a871ef806dd",
     "groups": "testers",
     "releaseNotesFile": "",
     "serviceCredentialsFile": ""

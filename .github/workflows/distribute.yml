@@ -1,5 +1,7 @@
 name: Build and Distribute
 
+# NOTE: To trigger this workflow, create a GitHub Release with a v* tag (e.g., v1.2.3).
+# Do not push git tags directly.
 on:
   push:
     tags:

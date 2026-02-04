@@ -1,0 +1,8 @@
+{
+  "appdistribution": {
+    "appId": "YOUR_FIREBASE_APP_ID",
+    "groups": "testers",
+    "releaseNotesFile": "",
+    "serviceCredentialsFile": ""
+  }
+}

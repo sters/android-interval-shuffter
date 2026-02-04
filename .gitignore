@@ -35,3 +35,7 @@ google-services.json
 
 # Development plan
 plan.md
+
+# Firebase
+.firebaserc
+firebase-debug.log

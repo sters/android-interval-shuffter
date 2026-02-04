@@ -17,6 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.sters.intervalshuffter.service.CaptureService
 import com.github.sters.intervalshuffter.ui.screens.CaptureScreen
@@ -28,6 +29,7 @@ class MainActivity : ComponentActivity() {
 
     private var captureService: CaptureService? = null
     private var serviceBound = false
+    private lateinit var captureViewModel: CaptureViewModel
 
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
@@ -36,13 +38,13 @@ class MainActivity : ComponentActivity() {
             serviceBound = true
 
             captureService?.onCaptureCountUpdated = { count ->
-                // Update UI via ViewModel
+                captureViewModel.updateCapturedCount(count)
             }
             captureService?.onElapsedTimeUpdated = { seconds ->
-                // Update UI via ViewModel
+                captureViewModel.updateElapsedSeconds(seconds)
             }
             captureService?.onCaptureStopped = {
-                // Handle capture stopped
+                captureViewModel.stopCapture()
             }
         }
 
@@ -69,6 +71,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        captureViewModel = ViewModelProvider(this)[CaptureViewModel::class.java]
 
         permissionLauncher.launch(permissionsToRequest)
 

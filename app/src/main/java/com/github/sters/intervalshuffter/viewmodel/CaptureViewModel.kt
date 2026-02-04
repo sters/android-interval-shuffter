@@ -65,8 +65,8 @@ class CaptureViewModel : ViewModel() {
         _captureState.update { CaptureState() }
     }
 
-    fun incrementCapturedCount() {
-        _captureState.update { it.copy(capturedCount = it.capturedCount + 1) }
+    fun updateCapturedCount(count: Int) {
+        _captureState.update { it.copy(capturedCount = count) }
     }
 
     fun updateElapsedSeconds(seconds: Long) {

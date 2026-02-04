@@ -54,7 +54,7 @@ class CameraManager(
 
             if (previewView != null) {
                 val preview = Preview.Builder().build().also {
-                    it.surfaceProvider = previewView.surfaceProvider
+                    it.setSurfaceProvider(previewView.surfaceProvider)
                 }
                 provider.bindToLifecycle(
                     lifecycleOwner,

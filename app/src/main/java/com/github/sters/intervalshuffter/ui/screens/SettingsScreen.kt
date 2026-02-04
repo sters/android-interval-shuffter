@@ -18,6 +18,7 @@ import com.github.sters.intervalshuffter.CaptureSettings
 import com.github.sters.intervalshuffter.StopConditionType
 import com.github.sters.intervalshuffter.ui.components.CameraPreview
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     settings: CaptureSettings,

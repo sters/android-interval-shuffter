@@ -83,7 +83,7 @@ fun CaptureScreen(
                                 fontSize = 14.sp
                             )
                             LinearProgressIndicator(
-                                progress = { captureState.capturedCount.toFloat() / settings.stopCount },
+                                progress = captureState.capturedCount.toFloat() / settings.stopCount,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(top = 8.dp),
@@ -98,7 +98,7 @@ fun CaptureScreen(
                                 fontSize = 14.sp
                             )
                             LinearProgressIndicator(
-                                progress = { captureState.elapsedSeconds.toFloat() / (settings.stopDurationMinutes * 60) },
+                                progress = captureState.elapsedSeconds.toFloat() / (settings.stopDurationMinutes * 60),
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(top = 8.dp),

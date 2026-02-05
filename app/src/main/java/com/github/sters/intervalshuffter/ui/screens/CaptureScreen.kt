@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.sp
 import com.github.sters.intervalshuffter.CaptureSettings
 import com.github.sters.intervalshuffter.CaptureState
 import com.github.sters.intervalshuffter.StopConditionType
-import com.github.sters.intervalshuffter.ui.components.CameraPreview
 
 @Composable
 fun CaptureScreen(
@@ -26,19 +25,12 @@ fun CaptureScreen(
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        // Camera Preview (full screen background)
-        if (settings.keepScreenOn) {
-            CameraPreview(
-                cameraType = settings.cameraType,
-                modifier = Modifier.fillMaxSize()
-            )
-        } else {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Black)
-            )
-        }
+        // Background (no camera preview during capture to avoid conflict with CaptureService)
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black)
+        )
 
         // Overlay UI
         Column(

@@ -1,15 +1,32 @@
 package com.github.sters.intervalshuffter.ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Slider
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -29,47 +46,51 @@ fun SettingsScreen(
     onKeepScreenOnChange: (Boolean) -> Unit,
     onCameraTypeChange: (CameraType) -> Unit,
     onStartCapture: () -> Unit,
-    hasPermissions: Boolean
+    hasPermissions: Boolean,
 ) {
     val scrollState = rememberScrollState()
-    val showLongDurationWarning = settings.stopConditionType == StopConditionType.FOREVER ||
+    val showLongDurationWarning =
+        settings.stopConditionType == StopConditionType.FOREVER ||
             (settings.stopConditionType == StopConditionType.DURATION && settings.stopDurationMinutes >= 30)
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(scrollState)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .verticalScroll(scrollState),
     ) {
         Text(
             text = "Interval Shuffter",
             style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
         // Camera Preview
         Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(200.dp),
         ) {
             if (hasPermissions) {
                 CameraPreview(
                     cameraType = settings.cameraType,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 )
             } else {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Black),
-                    contentAlignment = Alignment.Center
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .background(Color.Black),
+                    contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         text = "カメラの権限が必要です",
-                        color = Color.White
+                        color = Color.White,
                     )
                 }
             }
@@ -80,21 +101,21 @@ fun SettingsScreen(
         // Camera Selection
         Text(
             text = "カメラ選択",
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             FilterChip(
                 selected = settings.cameraType == CameraType.BACK,
                 onClick = { onCameraTypeChange(CameraType.BACK) },
-                label = { Text("リアカメラ") }
+                label = { Text("リアカメラ") },
             )
             FilterChip(
                 selected = settings.cameraType == CameraType.FRONT,
                 onClick = { onCameraTypeChange(CameraType.FRONT) },
-                label = { Text("フロントカメラ") }
+                label = { Text("フロントカメラ") },
             )
         }
 
@@ -103,14 +124,14 @@ fun SettingsScreen(
         // Interval Setting
         Text(
             text = "撮影間隔: ${settings.intervalSeconds}秒",
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
         )
         Slider(
             value = settings.intervalSeconds.toFloat(),
             onValueChange = { onIntervalChange(it.toInt()) },
             valueRange = 1f..60f,
             steps = 58,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -118,25 +139,25 @@ fun SettingsScreen(
         // Stop Condition
         Text(
             text = "終了条件",
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
         )
         Column {
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 RadioButton(
                     selected = settings.stopConditionType == StopConditionType.FOREVER,
-                    onClick = { onStopConditionTypeChange(StopConditionType.FOREVER) }
+                    onClick = { onStopConditionTypeChange(StopConditionType.FOREVER) },
                 )
                 Text("無制限")
             }
 
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 RadioButton(
                     selected = settings.stopConditionType == StopConditionType.COUNT,
-                    onClick = { onStopConditionTypeChange(StopConditionType.COUNT) }
+                    onClick = { onStopConditionTypeChange(StopConditionType.COUNT) },
                 )
                 Text("指定枚数: ")
                 if (settings.stopConditionType == StopConditionType.COUNT) {
@@ -144,18 +165,18 @@ fun SettingsScreen(
                         value = settings.stopCount.toString(),
                         onValueChange = { it.toIntOrNull()?.let(onStopCountChange) },
                         modifier = Modifier.width(100.dp),
-                        singleLine = true
+                        singleLine = true,
                     )
                     Text(" 枚")
                 }
             }
 
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 RadioButton(
                     selected = settings.stopConditionType == StopConditionType.DURATION,
-                    onClick = { onStopConditionTypeChange(StopConditionType.DURATION) }
+                    onClick = { onStopConditionTypeChange(StopConditionType.DURATION) },
                 )
                 Text("指定時間: ")
                 if (settings.stopConditionType == StopConditionType.DURATION) {
@@ -163,7 +184,7 @@ fun SettingsScreen(
                         value = settings.stopDurationMinutes.toString(),
                         onValueChange = { it.toIntOrNull()?.let(onStopDurationChange) },
                         modifier = Modifier.width(100.dp),
-                        singleLine = true
+                        singleLine = true,
                     )
                     Text(" 分")
                 }
@@ -176,15 +197,15 @@ fun SettingsScreen(
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = "撮影中も画面をONにする",
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
             )
             Switch(
                 checked = settings.keepScreenOn,
-                onCheckedChange = onKeepScreenOnChange
+                onCheckedChange = onKeepScreenOnChange,
             )
         }
 
@@ -194,17 +215,18 @@ fun SettingsScreen(
         if (showLongDurationWarning) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.errorContainer
-                )
+                colors =
+                    CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.errorContainer,
+                    ),
             ) {
                 Row(
                     modifier = Modifier.padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = "⚠️ 長時間の撮影を行う場合は、充電ケーブルを接続することをおすすめします。",
-                        color = MaterialTheme.colorScheme.onErrorContainer
+                        color = MaterialTheme.colorScheme.onErrorContainer,
                     )
                 }
             }
@@ -215,14 +237,15 @@ fun SettingsScreen(
         // Start Button
         Button(
             onClick = onStartCapture,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            enabled = hasPermissions
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+            enabled = hasPermissions,
         ) {
             Text(
                 text = "撮影開始",
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
             )
         }
 

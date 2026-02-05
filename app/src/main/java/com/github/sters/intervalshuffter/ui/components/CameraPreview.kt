@@ -20,20 +20,22 @@ import com.github.sters.intervalshuffter.CameraType
 fun CameraPreview(
     modifier: Modifier = Modifier,
     cameraType: CameraType,
-    onPreviewViewReady: ((PreviewView) -> Unit)? = null
+    onPreviewViewReady: ((PreviewView) -> Unit)? = null,
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    val previewView = remember {
-        PreviewView(context).apply {
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-            scaleType = PreviewView.ScaleType.FILL_CENTER
+    val previewView =
+        remember {
+            PreviewView(context).apply {
+                layoutParams =
+                    ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                    )
+                scaleType = PreviewView.ScaleType.FILL_CENTER
+            }
         }
-    }
 
     DisposableEffect(cameraType) {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
@@ -41,25 +43,29 @@ fun CameraPreview(
         cameraProviderFuture.addListener({
             val cameraProvider = cameraProviderFuture.get()
 
-            val preview = Preview.Builder().build().also {
-                it.setSurfaceProvider(previewView.surfaceProvider)
-            }
+            val preview =
+                Preview.Builder().build().also {
+                    it.setSurfaceProvider(previewView.surfaceProvider)
+                }
 
-            val cameraSelector = when (cameraType) {
-                CameraType.FRONT -> CameraSelector.DEFAULT_FRONT_CAMERA
-                CameraType.BACK -> CameraSelector.DEFAULT_BACK_CAMERA
-            }
+            val cameraSelector =
+                when (cameraType) {
+                    CameraType.FRONT -> CameraSelector.DEFAULT_FRONT_CAMERA
+                    CameraType.BACK -> CameraSelector.DEFAULT_BACK_CAMERA
+                }
 
             try {
                 cameraProvider.unbindAll()
                 cameraProvider.bindToLifecycle(
                     lifecycleOwner,
                     cameraSelector,
-                    preview
+                    preview,
                 )
                 onPreviewViewReady?.invoke(previewView)
-            } catch (e: Exception) {
-                e.printStackTrace()
+            } catch (ex: IllegalStateException) {
+                ex.printStackTrace()
+            } catch (ex: IllegalArgumentException) {
+                ex.printStackTrace()
             }
         }, ContextCompat.getMainExecutor(context))
 
@@ -70,6 +76,6 @@ fun CameraPreview(
 
     AndroidView(
         factory = { previewView },
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
     )
 }

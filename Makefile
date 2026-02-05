@@ -1,4 +1,4 @@
-.PHONY: help build build-release clean install lint test docker-build docker-shell setup \
+.PHONY: help build build-release clean install lint lint-all ktlint ktlint-format detekt test docker-build docker-shell setup \
         firebase-login firebase-init firebase-distribute firebase-add-testers
 
 # Default target
@@ -9,8 +9,14 @@ help:
 	@echo "    build           - Build debug APK using Docker"
 	@echo "    build-release   - Build release APK using Docker"
 	@echo "    clean           - Clean build artifacts"
-	@echo "    lint            - Run lint checks"
 	@echo "    test            - Run unit tests"
+	@echo ""
+	@echo "  Lint:"
+	@echo "    lint            - Run Android lint"
+	@echo "    lint-all        - Run all linters (ktlint + detekt + Android lint)"
+	@echo "    ktlint          - Run ktlint check"
+	@echo "    ktlint-format   - Auto-format code with ktlint"
+	@echo "    detekt          - Run detekt static analysis"
 	@echo ""
 	@echo "  Docker:"
 	@echo "    docker-build    - Build Docker image"
@@ -70,10 +76,30 @@ clean:
 	fi
 	rm -rf app/build build .gradle
 
-# Run lint
+# Run Android lint
 lint: docker-build
-	@echo "Running lint..."
+	@echo "Running Android lint..."
 	$(DOCKER_RUN) ./gradlew lint --no-daemon
+
+# Run all linters
+lint-all: docker-build
+	@echo "Running all linters..."
+	$(DOCKER_RUN) ./gradlew ktlintCheck detekt lint --no-daemon
+
+# Run ktlint check
+ktlint: docker-build
+	@echo "Running ktlint..."
+	$(DOCKER_RUN) ./gradlew ktlintCheck --no-daemon
+
+# Auto-format code with ktlint
+ktlint-format: docker-build
+	@echo "Formatting code with ktlint..."
+	$(DOCKER_RUN) ./gradlew ktlintFormat --no-daemon
+
+# Run detekt
+detekt: docker-build
+	@echo "Running detekt..."
+	$(DOCKER_RUN) ./gradlew detekt --no-daemon
 
 # Run tests
 test: docker-build

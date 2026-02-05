@@ -15,7 +15,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -26,48 +31,53 @@ import com.github.sters.intervalshuffter.ui.theme.IntervalShuffterTheme
 import com.github.sters.intervalshuffter.viewmodel.CaptureViewModel
 
 class MainActivity : ComponentActivity() {
-
     private var captureService: CaptureService? = null
     private var serviceBound = false
     private lateinit var captureViewModel: CaptureViewModel
 
-    private val serviceConnection = object : ServiceConnection {
-        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            val binder = service as CaptureService.LocalBinder
-            captureService = binder.getService()
-            serviceBound = true
+    private val serviceConnection =
+        object : ServiceConnection {
+            override fun onServiceConnected(
+                name: ComponentName?,
+                service: IBinder?,
+            ) {
+                val binder = service as CaptureService.LocalBinder
+                captureService = binder.getService()
+                serviceBound = true
 
-            captureService?.onCaptureCountUpdated = { count ->
-                captureViewModel.updateCapturedCount(count)
+                captureService?.onCaptureCountUpdated = { count ->
+                    captureViewModel.updateCapturedCount(count)
+                }
+                captureService?.onElapsedTimeUpdated = { seconds ->
+                    captureViewModel.updateElapsedSeconds(seconds)
+                }
+                captureService?.onCaptureStopped = {
+                    captureViewModel.stopCapture()
+                }
             }
-            captureService?.onElapsedTimeUpdated = { seconds ->
-                captureViewModel.updateElapsedSeconds(seconds)
-            }
-            captureService?.onCaptureStopped = {
-                captureViewModel.stopCapture()
+
+            override fun onServiceDisconnected(name: ComponentName?) {
+                captureService = null
+                serviceBound = false
             }
         }
 
-        override fun onServiceDisconnected(name: ComponentName?) {
-            captureService = null
-            serviceBound = false
-        }
-    }
-
-    private val permissionsToRequest = buildList {
-        add(Manifest.permission.CAMERA)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            add(Manifest.permission.POST_NOTIFICATIONS)
-        }
-    }.toTypedArray()
+    private val permissionsToRequest =
+        buildList {
+            add(Manifest.permission.CAMERA)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                add(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }.toTypedArray()
 
     private var hasPermissions by mutableStateOf(false)
 
-    private val permissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissions ->
-        hasPermissions = permissions.all { it.value }
-    }
+    private val permissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions(),
+        ) { permissions ->
+            hasPermissions = permissions.all { it.value }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,7 +90,7 @@ class MainActivity : ComponentActivity() {
             IntervalShuffterTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.background,
                 ) {
                     MainScreen(
                         hasPermissions = hasPermissions,
@@ -88,7 +98,7 @@ class MainActivity : ComponentActivity() {
                         onPauseCapture = ::pauseCaptureService,
                         onResumeCapture = ::resumeCaptureService,
                         onStopCapture = ::stopCaptureService,
-                        onKeepScreenOnChanged = ::updateKeepScreenOn
+                        onKeepScreenOnChanged = ::updateKeepScreenOn,
                     )
                 }
             }
@@ -112,14 +122,15 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun startCaptureService(settings: CaptureSettings) {
-        val intent = Intent(this, CaptureService::class.java).apply {
-            action = CaptureService.ACTION_START
-            putExtra(CaptureService.EXTRA_INTERVAL, settings.intervalSeconds)
-            putExtra(CaptureService.EXTRA_STOP_TYPE, settings.stopConditionType.name)
-            putExtra(CaptureService.EXTRA_STOP_COUNT, settings.stopCount)
-            putExtra(CaptureService.EXTRA_STOP_DURATION, settings.stopDurationMinutes)
-            putExtra(CaptureService.EXTRA_CAMERA_TYPE, settings.cameraType.name)
-        }
+        val intent =
+            Intent(this, CaptureService::class.java).apply {
+                action = CaptureService.ACTION_START
+                putExtra(CaptureService.EXTRA_INTERVAL, settings.intervalSeconds)
+                putExtra(CaptureService.EXTRA_STOP_TYPE, settings.stopConditionType.name)
+                putExtra(CaptureService.EXTRA_STOP_COUNT, settings.stopCount)
+                putExtra(CaptureService.EXTRA_STOP_DURATION, settings.stopDurationMinutes)
+                putExtra(CaptureService.EXTRA_CAMERA_TYPE, settings.cameraType.name)
+            }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(intent)
@@ -160,7 +171,7 @@ fun MainScreen(
     onResumeCapture: () -> Unit,
     onStopCapture: () -> Unit,
     onKeepScreenOnChanged: (Boolean) -> Unit,
-    viewModel: CaptureViewModel = viewModel()
+    viewModel: CaptureViewModel = viewModel(),
 ) {
     val settings by viewModel.settings.collectAsState()
     val captureState by viewModel.captureState.collectAsState()
@@ -188,7 +199,7 @@ fun MainScreen(
             onStop = {
                 viewModel.stopCapture()
                 onStopCapture()
-            }
+            },
         )
     } else {
         SettingsScreen(
@@ -203,7 +214,7 @@ fun MainScreen(
                 viewModel.startCapture()
                 onStartCapture(settings)
             },
-            hasPermissions = hasPermissions
+            hasPermissions = hasPermissions,
         )
     }
 }

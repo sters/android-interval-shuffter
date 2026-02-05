@@ -15,7 +15,7 @@ import java.util.concurrent.Executor
 
 class CameraManager(
     private val context: Context,
-    private val lifecycleOwner: LifecycleOwner
+    private val lifecycleOwner: LifecycleOwner,
 ) {
     private var cameraProvider: ProcessCameraProvider? = null
     private var imageCapture: ImageCapture? = null
@@ -26,7 +26,7 @@ class CameraManager(
     fun initialize(
         cameraType: CameraType,
         previewView: PreviewView? = null,
-        onInitialized: () -> Unit = {}
+        onInitialized: () -> Unit = {},
     ) {
         currentCameraType = cameraType
 
@@ -37,54 +37,63 @@ class CameraManager(
         }, executor)
     }
 
-    private fun bindCamera(previewView: PreviewView?, onInitialized: () -> Unit) {
+    private fun bindCamera(
+        previewView: PreviewView?,
+        onInitialized: () -> Unit,
+    ) {
         val provider = cameraProvider ?: return
 
-        val cameraSelector = when (currentCameraType) {
-            CameraType.FRONT -> CameraSelector.DEFAULT_FRONT_CAMERA
-            CameraType.BACK -> CameraSelector.DEFAULT_BACK_CAMERA
-        }
+        val cameraSelector =
+            when (currentCameraType) {
+                CameraType.FRONT -> CameraSelector.DEFAULT_FRONT_CAMERA
+                CameraType.BACK -> CameraSelector.DEFAULT_BACK_CAMERA
+            }
 
-        imageCapture = ImageCapture.Builder()
-            .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-            .build()
+        imageCapture =
+            ImageCapture.Builder()
+                .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+                .build()
 
         try {
             provider.unbindAll()
 
             if (previewView != null) {
-                val preview = Preview.Builder().build().also {
-                    it.setSurfaceProvider(previewView.surfaceProvider)
-                }
+                val preview =
+                    Preview.Builder().build().also {
+                        it.setSurfaceProvider(previewView.surfaceProvider)
+                    }
                 provider.bindToLifecycle(
                     lifecycleOwner,
                     cameraSelector,
                     preview,
-                    imageCapture
+                    imageCapture,
                 )
             } else {
                 provider.bindToLifecycle(
                     lifecycleOwner,
                     cameraSelector,
-                    imageCapture
+                    imageCapture,
                 )
             }
 
             onInitialized()
-        } catch (e: Exception) {
-            Log.e(TAG, "Camera binding failed", e)
+        } catch (ex: IllegalStateException) {
+            Log.e(TAG, "Camera binding failed", ex)
+        } catch (ex: IllegalArgumentException) {
+            Log.e(TAG, "Camera binding failed", ex)
         }
     }
 
     fun takePhoto(
         outputFileOptions: ImageCapture.OutputFileOptions,
         onSuccess: (ImageCapture.OutputFileResults) -> Unit,
-        onError: (ImageCaptureException) -> Unit
+        onError: (ImageCaptureException) -> Unit,
     ) {
-        val capture = imageCapture ?: run {
-            onError(ImageCaptureException(ImageCapture.ERROR_CAMERA_CLOSED, "Camera not initialized", null))
-            return
-        }
+        val capture =
+            imageCapture ?: run {
+                onError(ImageCaptureException(ImageCapture.ERROR_CAMERA_CLOSED, "Camera not initialized", null))
+                return
+            }
 
         capture.takePicture(
             outputFileOptions,
@@ -97,7 +106,7 @@ class CameraManager(
                 override fun onError(exception: ImageCaptureException) {
                     onError(exception)
                 }
-            }
+            },
         )
     }
 

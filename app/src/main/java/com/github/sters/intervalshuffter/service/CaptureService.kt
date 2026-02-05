@@ -14,7 +14,6 @@ import android.os.IBinder
 import android.os.Looper
 import android.os.PowerManager
 import android.util.Log
-import androidx.camera.core.ImageCaptureException
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -27,7 +26,6 @@ import com.github.sters.intervalshuffter.camera.CameraManager
 import com.github.sters.intervalshuffter.storage.ImageSaver
 
 class CaptureService : Service(), LifecycleOwner {
-
     private val binder = LocalBinder()
     private lateinit var lifecycleRegistry: LifecycleRegistry
 
@@ -70,18 +68,24 @@ class CaptureService : Service(), LifecycleOwner {
         imageSaver = ImageSaver(this)
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+    override fun onStartCommand(
+        intent: Intent?,
+        flags: Int,
+        startId: Int,
+    ): Int {
         when (intent?.action) {
             ACTION_START -> {
                 intervalSeconds = intent.getIntExtra(EXTRA_INTERVAL, 5)
-                stopConditionType = StopConditionType.valueOf(
-                    intent.getStringExtra(EXTRA_STOP_TYPE) ?: StopConditionType.FOREVER.name
-                )
+                stopConditionType =
+                    StopConditionType.valueOf(
+                        intent.getStringExtra(EXTRA_STOP_TYPE) ?: StopConditionType.FOREVER.name,
+                    )
                 stopCount = intent.getIntExtra(EXTRA_STOP_COUNT, 100)
                 stopDurationMinutes = intent.getIntExtra(EXTRA_STOP_DURATION, 10)
-                cameraType = CameraType.valueOf(
-                    intent.getStringExtra(EXTRA_CAMERA_TYPE) ?: CameraType.BACK.name
-                )
+                cameraType =
+                    CameraType.valueOf(
+                        intent.getStringExtra(EXTRA_CAMERA_TYPE) ?: CameraType.BACK.name,
+                    )
 
                 startForegroundService()
                 startCapturing()
@@ -105,13 +109,14 @@ class CaptureService : Service(), LifecycleOwner {
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                CHANNEL_ID,
-                getString(R.string.notification_channel_name),
-                NotificationManager.IMPORTANCE_LOW
-            ).apply {
-                description = getString(R.string.notification_channel_description)
-            }
+            val channel =
+                NotificationChannel(
+                    CHANNEL_ID,
+                    getString(R.string.notification_channel_name),
+                    NotificationManager.IMPORTANCE_LOW,
+                ).apply {
+                    description = getString(R.string.notification_channel_description)
+                }
 
             val notificationManager = getSystemService(NotificationManager::class.java)
             notificationManager.createNotificationChannel(channel)
@@ -119,12 +124,13 @@ class CaptureService : Service(), LifecycleOwner {
     }
 
     private fun createNotification(): Notification {
-        val pendingIntent = PendingIntent.getActivity(
-            this,
-            0,
-            Intent(this, MainActivity::class.java),
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
+        val pendingIntent =
+            PendingIntent.getActivity(
+                this,
+                0,
+                Intent(this, MainActivity::class.java),
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+            )
 
         val statusText = if (isPaused) "一時停止中" else "撮影中: ${capturedCount}枚"
 
@@ -144,12 +150,13 @@ class CaptureService : Service(), LifecycleOwner {
 
     private fun acquireWakeLock() {
         val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
-        wakeLock = powerManager.newWakeLock(
-            PowerManager.PARTIAL_WAKE_LOCK,
-            "IntervalShuffter::CaptureLock"
-        ).apply {
-            acquire(10 * 60 * 60 * 1000L) // 10 hours max
-        }
+        wakeLock =
+            powerManager.newWakeLock(
+                PowerManager.PARTIAL_WAKE_LOCK,
+                "IntervalShuffter::CaptureLock",
+            ).apply {
+                acquire(10 * 60 * 60 * 1000L) // 10 hours max
+            }
     }
 
     private fun releaseWakeLock() {
@@ -183,14 +190,15 @@ class CaptureService : Service(), LifecycleOwner {
     private fun scheduleNextCapture() {
         captureRunnable?.let { handler.removeCallbacks(it) }
 
-        captureRunnable = Runnable {
-            if (!isPaused && isRunning) {
-                takePhoto()
+        captureRunnable =
+            Runnable {
+                if (!isPaused && isRunning) {
+                    takePhoto()
+                }
+                if (isRunning && !shouldStop()) {
+                    scheduleNextCapture()
+                }
             }
-            if (isRunning && !shouldStop()) {
-                scheduleNextCapture()
-            }
-        }
 
         handler.postDelayed(captureRunnable!!, intervalSeconds * 1000L)
     }
@@ -198,21 +206,22 @@ class CaptureService : Service(), LifecycleOwner {
     private fun startTimer() {
         timerRunnable?.let { handler.removeCallbacks(it) }
 
-        timerRunnable = Runnable {
-            if (!isPaused && isRunning) {
-                elapsedSeconds++
-                onElapsedTimeUpdated?.invoke(elapsedSeconds)
-                updateNotification()
+        timerRunnable =
+            Runnable {
+                if (!isPaused && isRunning) {
+                    elapsedSeconds++
+                    onElapsedTimeUpdated?.invoke(elapsedSeconds)
+                    updateNotification()
 
-                if (shouldStop()) {
-                    stopCapturing()
-                    return@Runnable
+                    if (shouldStop()) {
+                        stopCapturing()
+                        return@Runnable
+                    }
+                }
+                if (isRunning) {
+                    handler.postDelayed(timerRunnable!!, 1000L)
                 }
             }
-            if (isRunning) {
-                handler.postDelayed(timerRunnable!!, 1000L)
-            }
-        }
 
         handler.postDelayed(timerRunnable!!, 1000L)
     }
@@ -237,7 +246,7 @@ class CaptureService : Service(), LifecycleOwner {
             },
             onError = { exception ->
                 Log.e(TAG, "Photo capture failed", exception)
-            }
+            },
         )
     }
 
@@ -284,8 +293,11 @@ class CaptureService : Service(), LifecycleOwner {
     }
 
     fun getCapturedCount(): Int = capturedCount
+
     fun getElapsedSeconds(): Long = elapsedSeconds
+
     fun isPaused(): Boolean = isPaused
+
     fun isRunning(): Boolean = isRunning
 
     companion object {

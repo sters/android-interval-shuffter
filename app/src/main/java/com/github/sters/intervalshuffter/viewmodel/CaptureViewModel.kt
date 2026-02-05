@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class CaptureViewModel : ViewModel() {
-
     private val _settings = MutableStateFlow(CaptureSettings())
     val settings: StateFlow<CaptureSettings> = _settings.asStateFlow()
 
@@ -48,7 +47,7 @@ class CaptureViewModel : ViewModel() {
                 isCapturing = true,
                 isPaused = false,
                 capturedCount = 0,
-                elapsedSeconds = 0
+                elapsedSeconds = 0,
             )
         }
     }

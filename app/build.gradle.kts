@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.github.sters.intervalshuffter"
+    namespace = "com.github.sters.intervalshutter"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.github.sters.intervalshuffter"
+        applicationId = "com.github.sters.intervalshutter"
         minSdk = 24
         targetSdk = 34
         versionCode = (project.findProperty("versionCode") as String?)?.toIntOrNull() ?: 1

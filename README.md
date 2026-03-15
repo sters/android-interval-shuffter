@@ -1,4 +1,4 @@
-# Android Interval Shuffter
+# Android Interval Shutter
 
 A Kotlin Android app for automated interval photography. Set your interval, choose your camera, and let the app capture photos automatically.
 
@@ -22,7 +22,7 @@ A Kotlin Android app for automated interval photography. Set your interval, choo
 
 ### From GitHub Releases
 
-Download the latest APK from the [Releases](https://github.com/sters/android-interval-shuffter/releases) page.
+Download the latest APK from the [Releases](https://github.com/sters/android-interval-shutter/releases) page.
 
 ### Build from Source
 
@@ -30,8 +30,8 @@ All builds use Docker for reproducibility.
 
 ```bash
 # Clone the repository
-git clone https://github.com/sters/android-interval-shuffter.git
-cd android-interval-shuffter
+git clone https://github.com/sters/android-interval-shutter.git
+cd android-interval-shutter
 
 # Build debug APK
 make build
@@ -62,7 +62,7 @@ APK outputs:
 4. **Monitor Progress**: View live elapsed time and photo count
 5. **Control**: Pause, resume, or stop the capture at any time
 
-Photos are saved to `Pictures/IntervalShuffter/` on your device.
+Photos are saved to `Pictures/IntervalShutter/` on your device.
 
 ## Development
 

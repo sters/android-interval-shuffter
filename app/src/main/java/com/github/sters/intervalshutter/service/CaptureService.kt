@@ -1,4 +1,4 @@
-package com.github.sters.intervalshuffter.service
+package com.github.sters.intervalshutter.service
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -18,12 +18,12 @@ import androidx.core.app.NotificationCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
-import com.github.sters.intervalshuffter.CameraType
-import com.github.sters.intervalshuffter.MainActivity
-import com.github.sters.intervalshuffter.R
-import com.github.sters.intervalshuffter.StopConditionType
-import com.github.sters.intervalshuffter.camera.CameraManager
-import com.github.sters.intervalshuffter.storage.ImageSaver
+import com.github.sters.intervalshutter.CameraType
+import com.github.sters.intervalshutter.MainActivity
+import com.github.sters.intervalshutter.R
+import com.github.sters.intervalshutter.StopConditionType
+import com.github.sters.intervalshutter.camera.CameraManager
+import com.github.sters.intervalshutter.storage.ImageSaver
 
 class CaptureService : Service(), LifecycleOwner {
     private val binder = LocalBinder()
@@ -135,7 +135,7 @@ class CaptureService : Service(), LifecycleOwner {
         val statusText = if (isPaused) "一時停止中" else "撮影中: ${capturedCount}枚"
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Interval Shuffter")
+            .setContentTitle("Interval Shutter")
             .setContentText(statusText)
             .setSmallIcon(android.R.drawable.ic_menu_camera)
             .setContentIntent(pendingIntent)
@@ -153,7 +153,7 @@ class CaptureService : Service(), LifecycleOwner {
         wakeLock =
             powerManager.newWakeLock(
                 PowerManager.PARTIAL_WAKE_LOCK,
-                "IntervalShuffter::CaptureLock",
+                "IntervalShutter::CaptureLock",
             ).apply {
                 acquire(10 * 60 * 60 * 1000L) // 10 hours max
             }
@@ -305,10 +305,10 @@ class CaptureService : Service(), LifecycleOwner {
         private const val CHANNEL_ID = "capture_channel"
         private const val NOTIFICATION_ID = 1
 
-        const val ACTION_START = "com.github.sters.intervalshuffter.START"
-        const val ACTION_PAUSE = "com.github.sters.intervalshuffter.PAUSE"
-        const val ACTION_RESUME = "com.github.sters.intervalshuffter.RESUME"
-        const val ACTION_STOP = "com.github.sters.intervalshuffter.STOP"
+        const val ACTION_START = "com.github.sters.intervalshutter.START"
+        const val ACTION_PAUSE = "com.github.sters.intervalshutter.PAUSE"
+        const val ACTION_RESUME = "com.github.sters.intervalshutter.RESUME"
+        const val ACTION_STOP = "com.github.sters.intervalshutter.STOP"
 
         const val EXTRA_INTERVAL = "interval"
         const val EXTRA_STOP_TYPE = "stop_type"

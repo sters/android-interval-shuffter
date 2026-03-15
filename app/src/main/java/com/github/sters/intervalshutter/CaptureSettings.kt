@@ -1,4 +1,4 @@
-package com.github.sters.intervalshuffter
+package com.github.sters.intervalshutter
 
 enum class StopConditionType {
     COUNT, // 指定枚数

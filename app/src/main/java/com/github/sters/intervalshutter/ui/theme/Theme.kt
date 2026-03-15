@@ -1,4 +1,4 @@
-package com.github.sters.intervalshuffter.ui.theme
+package com.github.sters.intervalshutter.ui.theme
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -27,7 +27,7 @@ private val LightColorScheme =
     )
 
 @Composable
-fun IntervalShuffterTheme(
+fun IntervalShutterTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {

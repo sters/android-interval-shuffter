@@ -1,4 +1,4 @@
-package com.github.sters.intervalshuffter.storage
+package com.github.sters.intervalshutter.storage
 
 import android.content.ContentValues
 import android.content.Context
@@ -24,7 +24,7 @@ class ImageSaver(private val context: Context) {
                 ContentValues().apply {
                     put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
                     put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-                    put(MediaStore.MediaColumns.RELATIVE_PATH, "${Environment.DIRECTORY_PICTURES}/IntervalShuffter")
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, "${Environment.DIRECTORY_PICTURES}/IntervalShutter")
                 }
 
             ImageCapture.OutputFileOptions.Builder(
@@ -37,7 +37,7 @@ class ImageSaver(private val context: Context) {
             val imagesDir =
                 File(
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                    "IntervalShuffter",
+                    "IntervalShutter",
                 )
             if (!imagesDir.exists()) {
                 imagesDir.mkdirs()

@@ -1,4 +1,4 @@
-package com.github.sters.intervalshuffter.ui.screens
+package com.github.sters.intervalshutter.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -30,10 +30,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.github.sters.intervalshuffter.CameraType
-import com.github.sters.intervalshuffter.CaptureSettings
-import com.github.sters.intervalshuffter.StopConditionType
-import com.github.sters.intervalshuffter.ui.components.CameraPreview
+import com.github.sters.intervalshutter.CameraType
+import com.github.sters.intervalshutter.CaptureSettings
+import com.github.sters.intervalshutter.StopConditionType
+import com.github.sters.intervalshutter.ui.components.CameraPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,7 +61,7 @@ fun SettingsScreen(
                 .verticalScroll(scrollState),
     ) {
         Text(
-            text = "Interval Shuffter",
+            text = "Interval Shutter",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
         )

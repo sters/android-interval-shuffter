@@ -1,4 +1,4 @@
-package com.github.sters.intervalshuffter
+package com.github.sters.intervalshutter
 
 import android.Manifest
 import android.content.ComponentName
@@ -24,11 +24,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.github.sters.intervalshuffter.service.CaptureService
-import com.github.sters.intervalshuffter.ui.screens.CaptureScreen
-import com.github.sters.intervalshuffter.ui.screens.SettingsScreen
-import com.github.sters.intervalshuffter.ui.theme.IntervalShuffterTheme
-import com.github.sters.intervalshuffter.viewmodel.CaptureViewModel
+import com.github.sters.intervalshutter.service.CaptureService
+import com.github.sters.intervalshutter.ui.screens.CaptureScreen
+import com.github.sters.intervalshutter.ui.screens.SettingsScreen
+import com.github.sters.intervalshutter.ui.theme.IntervalShutterTheme
+import com.github.sters.intervalshutter.viewmodel.CaptureViewModel
 
 class MainActivity : ComponentActivity() {
     private var captureService: CaptureService? = null
@@ -87,7 +87,7 @@ class MainActivity : ComponentActivity() {
         permissionLauncher.launch(permissionsToRequest)
 
         setContent {
-            IntervalShuffterTheme {
+            IntervalShutterTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,

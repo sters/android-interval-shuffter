@@ -1,4 +1,4 @@
-package com.github.sters.intervalshuffter.ui.components
+package com.github.sters.intervalshutter.ui.components
 
 import android.view.ViewGroup
 import androidx.camera.core.CameraSelector
@@ -14,7 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
-import com.github.sters.intervalshuffter.CameraType
+import com.github.sters.intervalshutter.CameraType
 
 @Composable
 fun CameraPreview(

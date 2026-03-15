@@ -37,7 +37,7 @@ This is a Kotlin Android app for automated interval photography using MVVM archi
 
 **CameraManager** (`camera/CameraManager.kt`) - CameraX wrapper for camera operations
 
-**ImageSaver** (`storage/ImageSaver.kt`) - MediaStore API abstraction, saves to `Pictures/IntervalShuffter/`
+**ImageSaver** (`storage/ImageSaver.kt`) - MediaStore API abstraction, saves to `Pictures/IntervalShutter/`
 
 ### Data Flow
 

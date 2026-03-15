@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "IntervalShuffter"
+rootProject.name = "IntervalShutter"
 include(":app")

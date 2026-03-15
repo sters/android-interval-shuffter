@@ -1,10 +1,10 @@
-package com.github.sters.intervalshuffter.viewmodel
+package com.github.sters.intervalshutter.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.github.sters.intervalshuffter.CameraType
-import com.github.sters.intervalshuffter.CaptureSettings
-import com.github.sters.intervalshuffter.CaptureState
-import com.github.sters.intervalshuffter.StopConditionType
+import com.github.sters.intervalshutter.CameraType
+import com.github.sters.intervalshutter.CaptureSettings
+import com.github.sters.intervalshutter.CaptureState
+import com.github.sters.intervalshutter.StopConditionType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
